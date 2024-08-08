@@ -1,0 +1,26 @@
+.div.flex.min-h-screen.h-full
+  = render 'layouts/sidebar'
+  .flex-grow.bg-gray-100.p-8
+    h1.text-2xl.font-bold.mb-4 Архив продуктов
+    .tabs.mb-4
+      a.text-blue-500.hover:text-blue-700.mr-2 href="/products" Активные
+      a.text-blue-500.hover:text-blue-700.mr-2 href="/categories" Категории
+      a.text-blue-500.hover:text-blue-700 href="/products/archived" Архив
+      table.w-full.bg-white.shadow-md.rounded-lg
+        thead
+          tr
+            th.px-4.py-2.text-left ID
+            th.px-4.py-2.text-left Название
+            th.px-4.py-2.text-left Категория
+            th.px-4.py-2.text-left Цена
+            th.px-4.py-2.text-left Количество
+            th.px-4.py-2.text-left Дата создания
+        tbody
+          - @products.each do |product|
+            tr
+              td.px-4.py-2= product.id
+              td.px-4.py-2= link_to product.name, archived_show_product_path(product)
+              td.px-4.py-2= product.category.name
+              td.px-4.py-2= product.price
+              td.px-4.py-2= product.quantity
+              td.px-4.py-2= product.created_at.strftime("%d.%m.%Y %H:%M")

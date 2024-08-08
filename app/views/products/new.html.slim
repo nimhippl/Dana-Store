@@ -1,0 +1,22 @@
+.div.flex.min-h-screen.h-full
+  = render 'layouts/sidebar'
+  .flex-grow.bg-gray-100.p-8
+    h1.text-2xl.font-bold.mb-4 Добавить продукт
+    = link_to 'Назад', products_path, class: 'bg-gray-800 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mb-4 inline-block'
+    = form_with model: @product, local: true, html: { multipart: true } do |form|
+      .mb-4
+        = form.label :name, 'Название', class: 'block text-gray-700 text-sm font-bold mb-2'
+        = form.text_field :name, class: 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+      .mb-4
+        = form.label :category_id, 'Категория', class: 'block text-gray-700 text-sm font-bold mb-2'
+        = form.collection_select :category_id, @categories, :id, :name, prompt: 'Выберите категорию', class: 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+      .mb-4
+        = form.label :price, 'Цена', class: 'block text-gray-700 text-sm font-bold mb-2'
+        = form.text_field :price, class: 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+      .mb-4
+        = form.label :quantity, 'Количество', class: 'block text-gray-700 text-sm font-bold mb-2'
+        = form.text_field :quantity, class: 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+      .mb-4
+        = form.label :image, 'Фото', class: 'block text-gray-700 text-sm font-bold mb-2'
+        = form.file_field :image, class: 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+      = form.submit 'Сохранить', class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'

@@ -1,0 +1,32 @@
+.div.flex.min-h-screen.h-full
+  = render 'layouts/sidebar'
+  .flex-grow.bg-gray-100.p-8
+    h1.text-3xl.font-bold.mb-6 Рассылки
+    = form_with url: newsletters_path, method: :post, local: true do |form|
+      .mb-4
+        span.text-xl.font-semibold Дата отправки:
+        | первое число каждого месяца
+      .mb-4
+        span.text-xl.font-semibold Время отправки:
+        | 8:00
+      .mb-4
+        span.text-xl.font-semibold Сообщение:
+        .relative.mt-2
+          = form.text_area :message,
+                  class: 'w-full h-40 bg-gray-800 text-white',
+                  disabled: true,
+                  value: "Привет,\n\nПришло время оплатить заказы.\nТвой текущий долг:"
+      .mb-4
+        label.text-xl.font-semibold Номер телефона для перевода
+        = form.text_field :phone_number, class: 'bg-gray-700 p-2 rounded w-full placeholder-gray-500'
+      .mb-4
+        label.text-xl.font-semibold Название банка для перевода
+        = form.text_field :bank_name, class: 'bg-gray-700 p-2 rounded w-full placeholder-gray-500'
+      .mb-4
+        label.text-xl.font-semibold Фото
+        .border-2.border-dashed.border-gray-600.p-4.rounded.flex.items-center.justify-center
+          = form.file_field :file, id: 'file-upload', class: 'hidden', accept: 'image/png, image/jpeg'
+          label(for="file-upload" class="cursor-pointer")
+            span.drag-and-drop Нажмите, чтобы добавить изображение (PNG, JPG, JPEG)
+      .mb-4
+        = form.submit 'Создать рассылку', class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'

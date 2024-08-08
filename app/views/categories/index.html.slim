@@ -1,0 +1,25 @@
+.div.flex.min-h-screen.h-full
+  = render 'layouts/sidebar'
+  .flex-grow.bg-gray-100.p-8
+    h1.text-2xl.font-bold.mb-4 Продукты
+    .tabs.mb-4
+      a.text-blue-500.hover:text-blue-700.mr-2 href="/products" Активные
+      a.text-blue-500.hover:text-blue-700.mr-2 href="/categories" Категории
+      a.text-blue-500.hover:text-blue-700 href="/products/archived" Архив
+    = link_to 'Добавить категорию', new_category_path, class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block'
+    table.w-full.bg-white.shadow-md.rounded-lg
+      thead
+        tr
+          th.px-4.py-2 ID
+          th.px-4.py-2 Название
+          th.px-4.py-2 Дата создания
+          th.px-4.py-2 Действия
+      tbody
+        - @categories.each do |category|
+          tr
+            td.px-4.py-2= category.id
+            td.px-4.py-2= category.name
+            td.px-4.py-2= category.created_at.strftime("%d.%m.%Y %H:%M")
+            td.px-4.py-2
+              - unless category.name == 'Прочее'
+                = link_to 'Удалить', category_path(category), method: :delete, data: { confirm: 'Вы уверены?' }, class: 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'

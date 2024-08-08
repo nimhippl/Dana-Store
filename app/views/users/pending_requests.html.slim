@@ -1,0 +1,32 @@
+.div.flex.min-h-screen.h-full
+  = render 'layouts/sidebar'
+  .flex-grow.bg-gray-100.p-8
+    h1.text-2xl.font-bold.mb-4 Пользователи
+    .tabs.mb-4
+      a.text-blue-500.hover:text-blue-700.mr-2 href="/users" Активные
+      a.text-blue-500.hover:text-blue-700.mr-2 href="/users/pending_requests" Запросы на подключение
+      a.text-blue-500.hover:text-blue-700 href="/users/archived" Архив
+      .mt-4
+        .flex
+          = button_to 'Подключить всех', activate_all_users_path, method: :patch, class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2'
+          = link_to 'Архивировать всех', destroy_all_users_path, data: { turbo_method: :delete, confirm: 'Вы уверены?' }, class: 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+      .mt-4
+        table.w-full.bg-white.shadow-md.rounded-lg
+          thead
+            tr
+              th.border.px-4.py-2 ID
+              th.border.px-4.py-2 Пользователь
+              th.border.px-4.py-2 Чат ID
+              th.border.px-4.py-2 Дата подключения
+              th.border.px-4.py-2 Действие
+          tbody
+            - @users.each do |user|
+              tr
+                td.border.px-4.py-2= user.id
+                td.border.px-4.py-2= user.telegram_username
+                td.border.px-4.py-2= user.telegram_chat_id
+                td.border.px-4.py-2= user.created_at.strftime("%d.%m.%Y %H:%M")
+                td.border.px-4.py-2
+                  .flex
+                    = button_to 'Подключить', activate_users_path(user_id: user.id), method: :patch, class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2'
+                    = link_to 'Архивировать', user_path(user), data: { turbo_method: :delete, confirm: 'Вы уверены?' }, class: 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'

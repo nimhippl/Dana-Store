@@ -1,0 +1,45 @@
+.div.flex.min-h-screen.h-full
+  = render 'layouts/sidebar'
+  .flex-grow.bg-gray-100.p-8
+    h1.text-2xl.font-bold.mb-4 Отчеты
+    .tabs.mb-4
+      a.text-blue-500.hover:text-blue-700.mr-2 href=reports_path Общий отчет
+      a.text-blue-500.hover:text-blue-700 href=user_reports_reports_path Отчет по пользователям
+
+    = form_with url: reports_path, method: :get, local: true do |f|
+      .flex.mb-4
+        .flex.flex-col.mr-4
+          = f.label :user_id, 'Пользователь'
+          = f.select :user_id, options_from_collection_for_select(@all_users, :id, :telegram_username, nil), include_blank: true, class: 'form-select'
+        .flex.flex-col.mr-4
+          = f.label :product_id, 'Продукт'
+          = f.select :product_id, options_from_collection_for_select(@all_products, :id, :name, nil), include_blank: true, class: 'form-select'
+        .flex.flex-col.mr-4
+          = f.label :payment_status, 'Статус оплаты'
+          = f.select :payment_status, [ ['Оплачено', 'paid'], ['Не оплачено', 'unpaid']], include_blank: true, class: 'form-select'
+        .flex.items-end
+          = f.submit 'Фильтровать', class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+
+
+    - if @filtered_users.empty?
+      p Нет данных для отображения
+    else
+      table.w-full.bg-white.shadow-md.rounded-lg
+        thead
+          tr
+            th.px-4.py-2.text-left Пользователь
+            th.px-4.py-2.text-left Продукт
+            th.px-4.py-2.text-left Стоимость
+            th.px-4.py-2.text-left Количество
+            th.px-4.py-2.text-left Оплачено
+        tbody
+          - @filtered_users.each do |user|
+            - filtered_orders = @filtered_orders.where(user_id: user.id)
+            - if filtered_orders.exists?
+              - filtered_orders.group_by(&:product).each do |product, orders|
+                tr
+                  td.px-4.py-2= user.telegram_username
+                  td.px-4.py-2= product.name
+                  td.px-4.py-2= orders.sum { |order| order.product.price }
+                  td.px-4.py-2= orders.size
+                  td.px-4.py-2= orders.all? { |order| order.state == 'paid' } ? 'Да' : 'Нет'

@@ -1,0 +1,15 @@
+.div.flex.min-h-screen.h-full
+  = render 'layouts/sidebar'
+  .flex-grow.bg-gray-100.p-8
+    = link_to 'Назад', archived_users_users_path, class: 'bg-gray-800 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mb-4 inline-block'
+    h1.text-2xl.font-bold.mb-4= @user.telegram_username
+    .border.p-4
+      p
+        strong.mr-2 Чат ID:
+        = @user.telegram_chat_id
+      p
+        strong.mr-2 Дата подключения:
+        = @user.created_at.strftime("%d.%m.%Y %H:%M")
+    .mt-4
+      = link_to 'Восстановить', restore_user_path(@user), class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2'
+      = link_to 'Удалить полностью', really_destroy_user_path(@user), data: { turbo_method: :delete, confirm: 'Вы уверены?' }, class: 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'

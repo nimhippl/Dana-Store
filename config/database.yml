@@ -1,0 +1,33 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: <%= ENV["DATABASE_USER"] %>
+  password: <%= ENV["DATABASE_PASSWORD"] %>
+  host: localhost
+  port: 5433
+
+development:
+  <<: *default
+  database: dana_store_development
+  port: 5433
+  username: <%= ENV["DATABASE_USER"] %>
+  password: <%= ENV["DATABASE_PASSWORD"] %>
+
+
+
+test:
+  <<: *default
+  database: dana_store_test
+  port: 5433
+  username: <%= ENV["DATABASE_USER"] %>
+  password: <%= ENV["DATABASE_PASSWORD"] %>
+#
+#   production:
+#     url: <%= ENV["MY_APP_DATABASE_URL"] %>
+
+production:
+  <<: *default
+  database: dana_store_production
+  username: dana_store
+  password: <%= ENV["DANA_STORE_DATABASE_PASSWORD"] %>

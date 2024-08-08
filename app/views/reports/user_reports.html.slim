@@ -1,0 +1,28 @@
+.div.flex.min-h-screen.h-full
+  = render 'layouts/sidebar'
+  .flex-grow.bg-gray-100.p-8
+    h1.text-2xl.font-bold.mb-4 Отчет по пользователям
+    .tabs.mb-4
+      a.text-blue-500.hover:text-blue-700.mr-2 href=reports_path Общий отчет
+      a.text-blue-500.hover:text-blue-700 href=user_reports_reports_path Отчет по пользователям
+    table.w-full.bg-white.shadow-md.rounded-lg
+      thead
+        tr
+          th.px-4.py-2.text-left Пользователь
+          th.px-4.py-2.text-left Депозит
+          th.px-4.py-2.text-left Стоимость
+          th.px-4.py-2.text-left Количество
+          th.px-4.py-2.text-left Оплачено
+          th.px-4.py-2.text-left Действия
+      tbody
+        - @users.each do |user|
+          tr
+            td.px-4.py-2= user.telegram_username
+            td.px-4.py-2= user.deposit
+            td.px-4.py-2= user.orders.where(created_at: Time.now.beginning_of_month..Time.now.end_of_month).sum { |order| order.product.price }
+            td.px-4.py-2= user.orders.where(created_at: Time.now.beginning_of_month..Time.now.end_of_month).count
+            td.px-4.py-2= user.orders.where(created_at: Time.now.beginning_of_month..Time.now.end_of_month).all? { |order| order.state == 'paid' } ? 'Да' : 'Нет'
+            td.px-4.py-2
+              .flex
+                = link_to 'Оплатить полностью', pay_all_orders_report_path(user), data: { turbo_method: :post }, class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2'
+                = link_to 'Внести оплату вручную', edit_payment_report_path(user.id), class: 'bg-gray-800 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded'

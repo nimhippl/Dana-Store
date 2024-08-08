@@ -1,0 +1,21 @@
+.div.flex.min-h-screen.h-full
+  = render 'layouts/sidebar'
+  .flex-grow.bg-gray-100.p-8
+    = link_to 'Назад', archived_products_products_path, class: 'bg-gray-800 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mb-4 inline-block'
+    h1.text-2xl.font-bold.mb-4= @product.name
+    .border.p-4
+      p
+        strong.mr-2 Цена:
+        = @product.price
+      p
+        strong.mr-2 Количество:
+        = @product.quantity
+      p
+        strong.mr-2 Категория:
+        = @product.category.name
+      p
+        strong.mr-2 Дата создания:
+        = @product.created_at.strftime("%d.%m.%Y %H:%M")
+    .mt-4
+      = link_to 'Восстановить', restore_product_path(@product), class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2'
+      = link_to 'Удалить полностью', really_destroy_product_path(@product), data: { turbo_method: :delete, confirm: 'Вы уверены?' }, class: 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' unless current_user.has_role?(:manager)

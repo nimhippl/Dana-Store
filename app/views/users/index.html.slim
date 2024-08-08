@@ -1,0 +1,23 @@
+.div.flex.min-h-screen.h-full
+  = render 'layouts/sidebar'
+  .flex-grow.bg-gray-100.p-8
+    h1.text-2xl.font-bold.mb-4 Пользователи
+    .tabs.mb-4
+      a.text-blue-500.hover:text-blue-700.mr-2 href="/users" Активные
+      a.text-blue-500.hover:text-blue-700.mr-2 href="/users/pending_requests" Запросы на подключение
+      a.text-blue-500.hover:text-blue-700 href="/users/archived" Архив
+      .mt-4
+        table.w-full.bg-white.shadow-md.rounded-lg
+          thead
+            tr
+              th.border.px-4.py-2 ID
+              th.border.px-4.py-2 Пользователь
+              th.border.px-4.py-2 Чат ID
+              th.border.px-4.py-2 Дата подключения
+          tbody
+            - @users.each do |user|
+              tr
+                td.border.px-4.py-2= user.id
+                td.border.px-4.py-2= user.telegram_username
+                td.border.px-4.py-2= user.telegram_chat_id
+                td.border.px-4.py-2= user.created_at.strftime("%d.%m.%Y %H:%M")

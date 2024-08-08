@@ -1,0 +1,31 @@
+.div.flex.min-h-screen.h-full
+  = render 'layouts/sidebar'
+  .flex-grow.bg-gray-100.p-8
+    h1.text-2xl.font-bold.mb-4 Продукты
+    .tabs.mb-4
+      a.text-blue-500.hover:text-blue-700.mr-2 href="/products" Активные
+      a.text-blue-500.hover:text-blue-700.mr-2 href="/categories" Категории
+      a.text-blue-500.hover:text-blue-700 href="/products/archived" Архив
+    = link_to 'Добавить продукт', new_product_path, class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block'
+    table.w-full.bg-white.shadow-md.rounded-lg
+      thead
+        tr
+          th.px-4.py-2.text-left ID
+          th.px-4.py-2.text-left Название
+          th.px-4.py-2.text-left Категория
+          th.px-4.py-2.text-left Цена
+          th.px-4.py-2.text-left Количество
+          th.px-4.py-2.text-left Дата создания
+      tbody
+        - @products.each do |product|
+          tr
+            td.px-4.py-2= product.id
+            td.px-4.py-2= product.name
+            td.px-4.py-2= product.category.name
+            td.px-4.py-2= product.price
+            td.px-4.py-2= product.quantity
+            td.px-4.py-2= product.created_at.strftime("%d.%m.%Y %H:%M")
+            td.px-4.py-2
+              .flex
+                = link_to 'Редактировать', edit_product_path(product), class: 'bg-gray-800 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mr-2'
+                = link_to 'Архивировать', product_path(product), data: { turbo_method: :delete, confirm: 'Вы уверены?' }, class: 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
